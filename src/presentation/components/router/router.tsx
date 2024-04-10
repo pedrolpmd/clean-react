@@ -1,13 +1,21 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Login } from '@/presentation/pages'
+import { AuthenticationSpy, ValidationStub } from '@/presentation/test'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const Router: React.FC = () => {
+  const validationStub = new ValidationStub()
+  const authenticationSpy = new AuthenticationSpy()
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login" exact component={Login} />
-      </Switch>
+      <Routes>
+        <Route path="/login" element={
+          <Login
+            validation={validationStub}
+            authentication={authenticationSpy}
+          />
+        } />
+      </Routes>
     </BrowserRouter>
   )
 }

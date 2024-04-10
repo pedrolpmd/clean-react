@@ -59,7 +59,6 @@
 * React Hooks
 * Husky
 * Lint Staged
-* Eslint
 * Standard Javascript Style
 
 > ## Features do React

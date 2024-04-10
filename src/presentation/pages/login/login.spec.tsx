@@ -1,6 +1,5 @@
 import React from 'react'
 import faker from 'faker'
-import 'jest-localstorage-mock'
 import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import Login from './login'
 import { ValidationStub, AuthenticationSpy } from '@/presentation/test/'
@@ -48,6 +47,8 @@ const simuteStatusForField = (sut: RenderResult, fieldName: string, validationEr
   expect(emailStatus.title).toBe(validationError || 'Tudo certo!')
   expect(emailStatus.textContent).toBe(validationError ? '🔴' : '🟢')
 }
+
+Storage.prototype.setItem = jest.fn()
 
 describe('Login Component', () => {
   afterEach(cleanup)
