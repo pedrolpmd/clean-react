@@ -4,6 +4,8 @@ import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/re
 import Login from './login'
 import { ValidationStub, AuthenticationSpy } from '@/presentation/test/'
 import { InvalidCredentialsError } from '@/domain/errors'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
@@ -13,11 +15,16 @@ type SutParams = {
   validationError: string
 }
 
+const history = createMemoryHistory()
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
   validationStub.errorMessage = params?.validationError
-  render(<Login validation={validationStub} authentication={authenticationSpy} />)
+  render(
+    <Router history={history}>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </Router>
+  )
   return {
     authenticationSpy
   }
@@ -150,5 +157,13 @@ describe('Login Component', () => {
     simulateValidSubmit()
     await waitFor(() => screen.getByTestId('form'))
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+  })
+
+  test('Should go to signup page', async () => {
+    makeSut()
+    const signup = screen.getByTestId('signup')
+    fireEvent.click(signup)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/signup')
   })
 })
