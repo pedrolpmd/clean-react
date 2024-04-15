@@ -17,6 +17,7 @@
     },
     "allowJs": true,
     "resolveJsonModule": true,
+    "strictNullChecks":false
   },
   "include": [
     "src"
