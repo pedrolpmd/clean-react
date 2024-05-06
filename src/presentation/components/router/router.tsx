@@ -1,7 +1,6 @@
 import React from 'react'
-import { Login } from '@/presentation/pages'
-import { AuthenticationSpy, ValidationStub } from '@/presentation/test'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Signup } from '@/presentation/pages'
 
 type Props = {
   makeLogin: React.FC
@@ -13,6 +12,7 @@ const Router: React.FC<Props> = ({ makeLogin } : Props) => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" component={makeLogin} />
+        <Route path="/signup" component={Signup} />
       </Switch>
     </BrowserRouter>
   )
