@@ -1,12 +1,12 @@
-import React from 'react'
-import faker from 'faker'
-import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/react'
-import { Login } from '@/presentation/pages'
-import { ValidationStub, AuthenticationSpy } from '@/presentation/test/'
 import { InvalidCredentialsError } from '@/domain/errors'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { Login } from '@/presentation/pages'
+import { AuthenticationSpy, ValidationStub } from '@/presentation/test/'
 import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import faker from 'faker'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Router } from 'react-router-dom'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy,
@@ -18,6 +18,7 @@ type SutParams = {
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
