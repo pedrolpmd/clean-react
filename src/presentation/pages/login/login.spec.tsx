@@ -49,10 +49,6 @@ const simulateValidSubmit = async (
   await waitFor(() => form)
 }
 
-const testElementExists = (fieldName: string): void => {
-  const element = screen.getByTestId(fieldName)
-  expect(element).toBeTruthy()
-}
 
 const testElementText = (fieldName: string, text: string): void => {
   const element = screen.getByTestId(fieldName)
@@ -107,7 +103,7 @@ describe('Login Component', () => {
   test('Should show spinner on submit', async () => {
     makeSut()
     await simulateValidSubmit()
-    testElementExists('spinner')
+    Helper.testElementExists('spinner')
   })
 
   test('Should call Authentication with correct values', async () => {
