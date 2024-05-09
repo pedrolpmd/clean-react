@@ -3,7 +3,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
 import React from 'react'
 import Signup from './signup'
+import { createMemoryHistory } from 'history'
 import { EmailInUseError } from '@/domain/errors'
+import { Router } from 'react-router-dom'
+import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token'
 
 type SutParams = {
   validationError: string,
@@ -11,34 +14,41 @@ type SutParams = {
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
-  
+  saveAccessTokenMock: SaveAccessTokenMock
+
 }
 
+const history = createMemoryHistory({ initialEntries: ['/signup']})
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const addAccountSpy = new AddAccountSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
 
   validationStub.errorMessage = params?.validationError
 
   render(
-    <Signup 
-      validation={validationStub}
-      addAccount={addAccountSpy}
-    />
+    <Router history={history}>
+      <Signup
+        validation={validationStub}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   )
 
   return {
-    addAccountSpy
+    addAccountSpy,
+    saveAccessTokenMock
   }
 }
 
 const simulateValidSubmit = async (
-  name = faker.name.findName(), 
-  email = faker.internet.email(), 
+  name = faker.name.findName(),
+  email = faker.internet.email(),
   password = faker.internet.password()
 ): Promise<void> => {
-  Helper.populateField('name',name)
-  Helper.populateField('email',email)
+  Helper.populateField('name', name)
+  Helper.populateField('email', email)
   Helper.populateField('password', password)
   Helper.populateField('passwordConfirmation', password)
   const form = screen.getByTestId('form')
@@ -50,7 +60,7 @@ describe('Signup Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.word()
     makeSut({ validationError })
-    Helper.testChildCount('error-wrap',0)
+    Helper.testChildCount('error-wrap', 0)
     Helper.testButtonIsDisabled('submit', true)
     Helper.testStatusForField('name', validationError)
     Helper.testStatusForField('email', validationError)
@@ -58,20 +68,20 @@ describe('Signup Component', () => {
     Helper.testStatusForField('passwordConfirmation', validationError)
   })
 
-  test.each([['name'],['email'],['password'],['passwordConfirmation']])
+  test.each([['name'], ['email'], ['password'], ['passwordConfirmation']])
     ('Should show %s error if Validation fails', (field) => {
-    const validationError = faker.random.words()
-    makeSut({ validationError })
-    Helper.populateField(field)
-    Helper.testStatusForField(field, validationError)
-  })
+      const validationError = faker.random.words()
+      makeSut({ validationError })
+      Helper.populateField(field)
+      Helper.testStatusForField(field, validationError)
+    })
 
-  test.each([['name'],['email'],['password'],['passwordConfirmation']])
+  test.each([['name'], ['email'], ['password'], ['passwordConfirmation']])
     ('Should show valid %s state if Validation succeeds', (field) => {
-    makeSut()
-    Helper.populateField(field)
-    Helper.testStatusForField(field)
-  })
+      makeSut()
+      Helper.populateField(field)
+      Helper.testStatusForField(field)
+    })
 
   test('Should enable submit button if form is valid', () => {
     makeSut()
@@ -95,9 +105,9 @@ describe('Signup Component', () => {
     const password = faker.internet.password()
     const passwordConfirmation = password
     await simulateValidSubmit(name, email, password)
-    expect(addAccountSpy.params).toEqual({ 
+    expect(addAccountSpy.params).toEqual({
       name,
-      email, 
+      email,
       password,
       passwordConfirmation
     })
@@ -125,22 +135,21 @@ describe('Signup Component', () => {
     Helper.testElementText('main-error', error.message)
     Helper.testChildCount('error-wrap', 1)
   })
-/*   
 
   test('Should call SaveAccessToken on success', async () => {
-    const { authenticationSpy, saveAccessTokenMock } = makeSut()
+    const { addAccountSpy, saveAccessTokenMock } = makeSut()
     await simulateValidSubmit()
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
-
-  test('Should go to signup page', async () => {
-    makeSut()
-    const signup = screen.getByTestId('signup')
-    fireEvent.click(signup)
-    expect(history.length).toBe(2)
-    expect(history.location.pathname).toBe('/signup')
-  }) */
+  /*   
+    test('Should go to signup page', async () => {
+      makeSut()
+      const signup = screen.getByTestId('signup')
+      fireEvent.click(signup)
+      expect(history.length).toBe(2)
+      expect(history.location.pathname).toBe('/signup')
+    }) */
 
 })
