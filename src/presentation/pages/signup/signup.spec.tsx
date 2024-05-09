@@ -32,11 +32,19 @@ describe('Signup Component', () => {
     Helper.testStatusForField('passwordConfirmation', validationError)
   })
 
-  test.each([['name'],['email'],['password'],['passwordConfirmation']])('Should show %s error if Validation fails', (field) => {
+  test.each([['name'],['email'],['password'],['passwordConfirmation']])
+    ('Should show %s error if Validation fails', (field) => {
     const validationError = faker.random.words()
     makeSut({ validationError })
     Helper.populateField(field)
     Helper.testStatusForField(field, validationError)
+  })
+
+  test.each([['name'],['email'],['password'],['passwordConfirmation']])
+    ('Should show valid %s state if Validation succeeds', (field) => {
+    makeSut()
+    Helper.populateField(field)
+    Helper.testStatusForField(field)
   })
 
 })
