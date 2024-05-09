@@ -111,4 +111,36 @@ describe('Signup Component', () => {
     expect(addAccountSpy.callsCount).toBe(1)
   })
 
+  test('Should not call Authentication if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { addAccountSpy } = makeSut({ validationError })
+    await simulateValidSubmit()
+    expect(addAccountSpy.callsCount).toBe(0)
+  })
+
+/*   test('Should present error if Authentication fails', async () => {
+    const { authenticationSpy } = makeSut()
+    const error = new InvalidCredentialsError()
+    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+    await simulateValidSubmit()
+    testElementText('main-error', error.message)
+    Helper.testChildCount('error-wrap', 1)
+  })
+
+  test('Should call SaveAccessToken on success', async () => {
+    const { authenticationSpy, saveAccessTokenMock } = makeSut()
+    await simulateValidSubmit()
+    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
+  })
+
+  test('Should go to signup page', async () => {
+    makeSut()
+    const signup = screen.getByTestId('signup')
+    fireEvent.click(signup)
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/signup')
+  }) */
+
 })
