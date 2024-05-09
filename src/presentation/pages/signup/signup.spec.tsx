@@ -27,15 +27,16 @@ describe('Signup Component', () => {
     Helper.testChildCount('error-wrap',0)
     Helper.testButtonIsDisabled('submit', true)
     Helper.testStatusForField('name', validationError)
-    Helper.testStatusForField('email', 'Campo obrigatório')
-    Helper.testStatusForField('password', 'Campo obrigatório')
-    Helper.testStatusForField('passwordConfirmation', 'Campo obrigatório')
+    Helper.testStatusForField('email', validationError)
+    Helper.testStatusForField('password', validationError)
+    Helper.testStatusForField('passwordConfirmation', validationError)
   })
 
-  test('Should show name error if Validation fails', () => {
+  test.each([['name'],['email'],['password'],['passwordConfirmation']])('Should show %s error if Validation fails', (field) => {
     const validationError = faker.random.words()
     makeSut({ validationError })
-    Helper.populateField('name')
-    Helper.testStatusForField('name', validationError)
+    Helper.populateField(field)
+    Helper.testStatusForField(field, validationError)
   })
+
 })
