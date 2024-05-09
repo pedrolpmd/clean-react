@@ -50,11 +50,6 @@ const simulateValidSubmit = async (
 }
 
 
-const testElementText = (fieldName: string, text: string): void => {
-  const element = screen.getByTestId(fieldName)
-  expect(element.textContent).toBe(text)
-}
-
 Storage.prototype.setItem = jest.fn()
 
 describe('Login Component', () => {
@@ -133,7 +128,7 @@ describe('Login Component', () => {
     const error = new InvalidCredentialsError()
     jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
     await simulateValidSubmit()
-    testElementText('main-error', error.message)
+    Helper.testElementText('main-error', error.message)
     Helper.testChildCount('error-wrap', 1)
   })
 
