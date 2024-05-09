@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
 import React from 'react'
 import Signup from './signup'
+import { EmailInUseError } from '@/domain/errors'
 
 type SutParams = {
   validationError: string,
@@ -45,7 +46,10 @@ const simulateValidSubmit = async (
   await waitFor(() => form)
 }
 
-
+const testElementText = (fieldName: string, text: string): void => {
+  const element = screen.getByTestId(fieldName)
+  expect(element.textContent).toBe(text)
+}
 
 describe('Signup Component', () => {
   test('Should start with initial state', () => {
@@ -111,21 +115,22 @@ describe('Signup Component', () => {
     expect(addAccountSpy.callsCount).toBe(1)
   })
 
-  test('Should not call Authentication if form is invalid', async () => {
+  test('Should not call AddAccount if form is invalid', async () => {
     const validationError = faker.random.words()
     const { addAccountSpy } = makeSut({ validationError })
     await simulateValidSubmit()
     expect(addAccountSpy.callsCount).toBe(0)
   })
 
-/*   test('Should present error if Authentication fails', async () => {
-    const { authenticationSpy } = makeSut()
-    const error = new InvalidCredentialsError()
-    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error))
+  test('Should present error if AddAccount fails', async () => {
+    const { addAccountSpy } = makeSut()
+    const error = new EmailInUseError()
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     testElementText('main-error', error.message)
     Helper.testChildCount('error-wrap', 1)
   })
+/*   
 
   test('Should call SaveAccessToken on success', async () => {
     const { authenticationSpy, saveAccessTokenMock } = makeSut()
