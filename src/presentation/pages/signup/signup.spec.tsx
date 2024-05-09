@@ -152,13 +152,12 @@ describe('Signup Component', () => {
     Helper.testElementText('main-error', error.message)
     Helper.testChildCount('error-wrap', 1)
   })
-  /*   
-    test('Should go to signup page', async () => {
-      makeSut()
-      const signup = screen.getByTestId('signup')
-      fireEvent.click(signup)
-      expect(history.length).toBe(2)
-      expect(history.location.pathname).toBe('/signup')
-    }) */
 
+  test('Should go to login page', async () => {
+    makeSut()
+    const login = screen.getByTestId('login-link')
+    fireEvent.click(login)
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/login')
+  })
 })

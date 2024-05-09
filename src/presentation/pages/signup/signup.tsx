@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Styles from './signup-styles.scss'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount, SaveAccessToken } from '@/domain/usecases'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 type Props = {
   validation: Validation,
@@ -79,7 +79,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
             disabled={!!state.emailError || !!state.nameError || !!state.passwordError || !!state.passwordConfirmationError}
             className={Styles.submit}
             type="submit">Entrar</button>
-          <span className={Styles.link}>Voltar para Login</span>
+          <Link replace to='/login' data-testid='login-link' className={Styles.link}>Voltar para Login</Link>
           <FormStatus />
         </form>
       </Context.Provider>
