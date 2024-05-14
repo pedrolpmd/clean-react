@@ -25,12 +25,17 @@ describe('LoadSurveyList', () => {
     expect(httpGetClientSpy.url).toBe(url)
   })
 
-  test('Should throw UnexpectedError if HttpGetClient returns 403', async () => {
-    const { sut, httpGetClientSpy } = makeSut()
-    httpGetClientSpy.response = {
-      statusCode: HttpStatusCode.forbidden
-    }
-    const promise = sut.loadAll()
-    await expect(promise).rejects.toThrow(new UnexpectedError())
-  })
+  test.each([
+    [HttpStatusCode.forbidden],
+    [HttpStatusCode.notFound],
+    [HttpStatusCode.serverError]
+  ])
+    ('Should throw UnexpectedError if HttpGetClient returns %s', async (statusCode) => {
+      const { sut, httpGetClientSpy } = makeSut()
+      httpGetClientSpy.response = {
+        statusCode: statusCode
+      }
+      const promise = sut.loadAll()
+      await expect(promise).rejects.toThrow(new UnexpectedError())
+    })
 })
