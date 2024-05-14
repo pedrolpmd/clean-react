@@ -50,4 +50,15 @@ describe('LoadSurveyList', () => {
     const surveyList = await sut.loadAll()
     expect(surveyList).toEqual(httpResult)
   })
+
+  test('Should return empty list if HttpPostClient returns 204', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    const httpResult = mockSurveyListModel()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.noContent,
+      body: httpResult
+    }
+    const surveyList = await sut.loadAll()
+    expect(surveyList).toEqual([])
+  })
 })
