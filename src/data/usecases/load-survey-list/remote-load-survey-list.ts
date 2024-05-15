@@ -1,4 +1,3 @@
-import { HttpResponse } from './../../protocols/http/http-response';
 import { HttpGetClient, HttpStatusCode } from "@/data/protocols/http";
 import { UnexpectedError } from "@/domain/errors";
 import { SurveyModel } from "@/domain/models";
