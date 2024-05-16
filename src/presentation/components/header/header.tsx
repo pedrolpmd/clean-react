@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import Styles from './survey-list-styles.scss'
+import Styles from './header-styles.scss'
 import { Logo } from "@/presentation/components"
 
 const Header: React.FC = () => {
