@@ -6,7 +6,7 @@ import Signup from './signup'
 import { createMemoryHistory } from 'history'
 import { EmailInUseError } from '@/domain/errors'
 import { Router } from 'react-router-dom'
-import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token'
+import { UpdateCurrentAccountMock } from '@/presentation/test/mock-update-current-account'
 
 type SutParams = {
   validationError: string,
@@ -14,7 +14,7 @@ type SutParams = {
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
-  saveAccessTokenMock: SaveAccessTokenMock
+  updateCurrentAccountMock: UpdateCurrentAccountMock
 
 }
 
@@ -22,7 +22,7 @@ const history = createMemoryHistory({ initialEntries: ['/signup']})
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const addAccountSpy = new AddAccountSpy()
-  const saveAccessTokenMock = new SaveAccessTokenMock()
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock()
 
   validationStub.errorMessage = params?.validationError
 
@@ -31,14 +31,14 @@ const makeSut = (params?: SutParams): SutTypes => {
       <Signup
         validation={validationStub}
         addAccount={addAccountSpy}
-        saveAccessToken={saveAccessTokenMock}
+        updateCurrentAccount={updateCurrentAccountMock}
       />
     </Router>
   )
 
   return {
     addAccountSpy,
-    saveAccessTokenMock
+    updateCurrentAccountMock
   }
 }
 
@@ -136,18 +136,18 @@ describe('Signup Component', () => {
     Helper.testChildCount('error-wrap', 1)
   })
 
-  test('Should call SaveAccessToken on success', async () => {
-    const { addAccountSpy, saveAccessTokenMock } = makeSut()
+  test('Should call UpdateCurrentAccount on success', async () => {
+    const { addAccountSpy, updateCurrentAccountMock } = makeSut()
     await simulateValidSubmit()
-    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+    expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })
 
-  test('Should present error if SaveAccessToken failes', async () => {
-    const { saveAccessTokenMock } = makeSut()
+  test('Should present error if UpdateCurrentAccount failes', async () => {
+    const { updateCurrentAccountMock } = makeSut()
     const error = new EmailInUseError()
-    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    jest.spyOn(updateCurrentAccountMock, 'save').mockRejectedValueOnce(error)
     await simulateValidSubmit()
     Helper.testElementText('main-error', error.message)
     Helper.testChildCount('error-wrap', 1)
