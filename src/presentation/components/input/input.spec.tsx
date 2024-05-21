@@ -1,13 +1,13 @@
 import React from "react";
 import { render, screen } from '@testing-library/react'
 import Input from './input'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext } from "@/presentation/contexts";
 
 const makeSut = (): void => {
   render(
-    <Context.Provider value={{ state: {} }}>
+    <FormContext.Provider value={{ state: {} }}>
       <Input name="test-input" />
-    </Context.Provider >
+    </FormContext.Provider >
   )
 }
 

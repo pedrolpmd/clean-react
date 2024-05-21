@@ -1,5 +1,5 @@
 import { Footer, FormStatus, Input, LoginHeader, SubmitButton } from '@/presentation/components'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext } from '@/presentation/contexts'
 import React, { useEffect, useState } from 'react'
 import Styles from './signup-styles.scss'
 import { Validation } from '@/presentation/protocols/validation'
@@ -78,7 +78,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
   return (
     <div className={Styles.signupWrap}>
       <LoginHeader />
-      <Context.Provider value={{ state, setState }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
           <h2>Criar conta</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
@@ -89,7 +89,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount, updateCurrentAccount 
           <Link replace to='/login' data-testid='login-link' className={Styles.link}>Voltar para Login</Link>
           <FormStatus />
         </form>
-      </Context.Provider>
+      </FormContext.Provider>
       <Footer />
     </div>
   )
