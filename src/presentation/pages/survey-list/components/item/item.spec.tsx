@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import '@testing-library/jest-dom/extend-expect';
-import SurveyItem from "./survey-item"
+import SurveyItem from "./item"
 import React from "react"
 import { mockSurveyModel } from "@/domain/test"
 import { IconName } from "@/presentation/components"
