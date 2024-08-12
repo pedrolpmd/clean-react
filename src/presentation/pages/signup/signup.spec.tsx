@@ -1,4 +1,4 @@
-import { Helper, ValidationStub, AddAccountSpy } from '@/presentation/test'
+import { Helper, ValidationStub } from '@/presentation/test'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
 import React from 'react'
@@ -8,6 +8,7 @@ import { EmailInUseError } from '@/domain/errors'
 import { Router } from 'react-router-dom'
 import { ApiContext } from '@/presentation/contexts'
 import { AccountModel } from '@/domain/models'
+import { AddAccountSpy } from '@/domain/test'
 
 type SutParams = {
   validationError: string,

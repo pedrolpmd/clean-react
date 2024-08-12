@@ -1,21 +1,17 @@
-import { AuthenticationParams } from '@/domain/usecases'
-import { AccountModel, SurveyModel } from '../models'
+import { RemoteLoadSurveyList } from '@/data/usecases/load-survey-list/remote-load-survey-list'
 import faker from 'faker'
+import { LoadSurveyList } from '../usecases'
 
-export const mockSurveyModel = (): SurveyModel => (
+export const mockSurveyModel = (): LoadSurveyList.Model => (
   {
     id: faker.random.uuid(),
     question: faker.random.words(10),
-    answers: [{
-      answer: faker.random.words(5),
-      image: faker.internet.url()
-    }],
     date: new Date(),
     didAnswear: true
   }
 )
 
-export const mockSurveyListModel = (): SurveyModel[] => ([
+export const mockSurveyListModel = (): LoadSurveyList.Model[] => ([
   mockSurveyModel(),
   mockSurveyModel(),
   mockSurveyModel()
