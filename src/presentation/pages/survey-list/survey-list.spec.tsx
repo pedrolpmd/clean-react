@@ -5,6 +5,9 @@ import { SurveyList } from '@/presentation/pages'
 import { render, screen, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom/extend-expect';
 import React from "react"
+import { ApiContext } from "@/presentation/contexts"
+import { Router } from "react-router-dom"
+import { createMemoryHistory } from 'history'
 
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0
@@ -20,7 +23,12 @@ type SutTypes = {
 }
 
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
-  render(<SurveyList loadSurveyList={loadSurveyListSpy} />)
+  render(
+    <ApiContext.Provider value={{ setCurrentAccount: jest.fn() }}>
+      <Router history={createMemoryHistory()}>
+        <SurveyList loadSurveyList={loadSurveyListSpy} />
+      </Router>
+    </ApiContext.Provider>)
 
   return {
     loadSurveyListSpy
