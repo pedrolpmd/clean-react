@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+Cypress.Commands.add('getByTestId',(id) => cy.get(`[data-testid=${id}]`))
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
