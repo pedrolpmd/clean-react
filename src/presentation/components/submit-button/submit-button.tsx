@@ -7,7 +7,6 @@ type Props = {
 
 const SubmitButton: React.FC<Props> = ({ text }) => {
   const { state } = useContext(FormContext)
-  
   return (
     <button
       data-testid='submit'

@@ -6,6 +6,7 @@ import { SurveyList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/contexts'
 import { getCurrentAccounAdapter, setCurrentAccounAdapter } from '../adapters/current-account-adapter'
 import { PrivateRoute } from '@/presentation/components'
+import { makeSurveyList } from '../factories/pages/surveyList/survey-list-factory'
 
 const Router: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const Router: React.FC = () => {
         <Switch>
           <Route path="/login" component={makeLogin} />
           <Route path="/signup" component={makeSignup} />
-          <PrivateRoute path="/" exact component={SurveyList} />
+          <PrivateRoute path="/" exact component={makeSurveyList} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
