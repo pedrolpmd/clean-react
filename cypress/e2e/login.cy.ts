@@ -125,4 +125,26 @@ describe('template spec', () => {
       }
     })
   })
+
+  it('Should prevent multiple submits', () => {
+    cy.intercept('OPTIONS', '/api/login', {
+      statusCode: 200,
+      headers
+    })
+
+    cy.intercept('POST', '/api/login', {
+      statusCode: 200,
+      body: {
+        accessToken: faker.random.uuid()
+      },
+      headers
+    }).as('request')
+
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('submit').dblclick()
+    cy.get('@request.all').should('have.length', 1)
+
+
+  })
 })
