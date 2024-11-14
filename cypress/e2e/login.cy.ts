@@ -143,7 +143,23 @@ describe('template spec', () => {
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     cy.getByTestId('submit').dblclick()
     cy.get('@request.all').should('have.length', 1)
+  })
 
+  it('Should not call submit if form is invalid', () => {
+    cy.intercept('OPTIONS', '/api/login', {
+      statusCode: 200,
+      headers
+    })
 
+    cy.intercept('POST', '/api/login', {
+      statusCode: 200,
+      body: {
+        accessToken: faker.random.uuid()
+      },
+      headers
+    }).as('request')
+
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    cy.get('@request.all').should('have.length', 0)
   })
 })
