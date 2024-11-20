@@ -81,4 +81,15 @@ describe('login', () => {
     testUrl('/signup')
   })
 
+  it('Should present unexpectedError on 400', () => {
+    mockPostRequest('/api/signup', 400, {
+      error: faker.random.words()
+    })
+
+    simulateValidSubmit()
+
+    testMainError('Algo de errado aconteceu. Tente novamente em breve.')
+    testUrl('/signup')
+  })
+
 })
