@@ -119,4 +119,13 @@ describe('login', () => {
     testHttpCallsCount(1)
   })
 
+  it('Should not call submit if form is invalid', () => {
+    mockPostRequest('/api/signup', 200, {
+      accessToken: faker.random.uuid()
+    })
+
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    testHttpCallsCount(0)
+  })
+
 })
