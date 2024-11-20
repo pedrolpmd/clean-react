@@ -1,4 +1,4 @@
-import {  testInputStatus, testMainError, testUrl } from "../support/form-helper"
+import {  testInputStatus, testLocalStorageItem, testMainError, testUrl } from "../support/form-helper"
 import { mockOptionsRequest, mockPostRequest } from "../support/http-mocks"
 import faker from 'faker'
 
@@ -90,6 +90,21 @@ describe('login', () => {
 
     testMainError('Algo de errado aconteceu. Tente novamente em breve.')
     testUrl('/signup')
+  })
+
+  it('Should save accessToken if valid credentials are provided', () => {
+    mockPostRequest('/api/signup', 200, {
+      accessToken: faker.random.uuid()
+    })
+
+    simulateValidSubmit()
+
+    cy.getByTestId('main-error').should('not.exist')
+    cy.getByTestId('spinner').should('not.exist')
+
+    testUrl('/')
+
+    testLocalStorageItem('account','accessToken')
   })
 
 })
