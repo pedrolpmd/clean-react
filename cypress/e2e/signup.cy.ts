@@ -1,22 +1,19 @@
-import {  testInputStatus, testLocalStorageItem, testMainError, testUrl } from "../support/form-helper"
+import { populateField } from './../../src/presentation/test/form-helper';
+import {  testHttpCallsCount, testInputStatus, testLocalStorageItem, testMainError, testUrl } from "../support/form-helper"
 import { mockOptionsRequest, mockPostRequest } from "../support/http-mocks"
 import faker from 'faker'
 
-export const simulateValidSubmit = (): void => {
+const populateFields = (): void => {
   cy.getByTestId('name').focus().type(faker.name.findName())
-  testInputStatus('name')
-
   cy.getByTestId('email').focus().type(faker.internet.email())
-
-  testInputStatus('email')
 
   const password = faker.random.alphaNumeric(5)
   cy.getByTestId('password').focus().type(password)
-  testInputStatus('password')
-
   cy.getByTestId('passwordConfirmation').focus().type(password)
-  testInputStatus('passwordConfirmation')
+}
 
+const simulateValidSubmit = (): void => {
+  populateFields()
   cy.getByTestId('submit').click()
 }
 
@@ -66,6 +63,11 @@ describe('login', () => {
   it('Should present valid state if form is valid', () => {
     simulateValidSubmit()
 
+    testInputStatus('name')
+    testInputStatus('email')
+    testInputStatus('password')
+    testInputStatus('passwordConfirmation')
+
     cy.getByTestId('submit').should('not.have.attr', 'disabled')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
@@ -105,6 +107,16 @@ describe('login', () => {
     testUrl('/')
 
     testLocalStorageItem('account','accessToken')
+  })
+
+  it('Should prevent multiple submits', () => {
+    mockPostRequest('/api/signup', 200, {
+      accessToken: faker.random.uuid()
+    })
+
+    populateFields()
+    cy.getByTestId('submit').dblclick()
+    testHttpCallsCount(1)
   })
 
 })
