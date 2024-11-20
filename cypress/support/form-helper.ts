@@ -30,4 +30,4 @@ export const testLocalStorageItem = (key: string, expectedObj: string): void => 
       assert.isOk(keyObj[expectedObj])
     }
   })
-} 
+}
