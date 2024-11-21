@@ -12,6 +12,7 @@ type SutType = {
   history: MemoryHistory,
   setCurrentAccountMock: (account: AccountModel) => void
 }
+
 const makeSut = (account = mockAccountModel()): SutType => {
   const history = createMemoryHistory({ initialEntries: ['/'] })
   const setCurrentAccountMock = jest.fn()
