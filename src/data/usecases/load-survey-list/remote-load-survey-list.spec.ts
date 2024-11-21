@@ -2,7 +2,7 @@ import faker from 'faker'
 import { RemoteLoadSurveyList } from './remote-load-survey-list'
 import { HttpGetClientSpy, mockRemoteSurveyListModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { UnexpectedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { mockSurveyListModel } from '@/domain/test'
 
 type SutTypes = {
@@ -26,7 +26,6 @@ describe('LoadSurveyList', () => {
   })
 
   test.each([
-    [HttpStatusCode.forbidden],
     [HttpStatusCode.notFound],
     [HttpStatusCode.serverError]
   ])
@@ -38,6 +37,16 @@ describe('LoadSurveyList', () => {
       const promise = sut.loadAll()
       await expect(promise).rejects.toThrow(new UnexpectedError())
     })
+
+  test('Should throw AccessDeniedError if HttpGetClient returns %s', async () => {
+      const { sut, httpGetClientSpy } = makeSut()
+      httpGetClientSpy.response = {
+        statusCode: 403
+      }
+      const promise = sut.loadAll()
+      await expect(promise).rejects.toThrow(new AccessDeniedError())
+    })
+
 
   test('Should return RemoteLoadSurveyList.Model[] if HttpPostClient returns 200', async () => {
     const { sut, httpGetClientSpy } = makeSut()
