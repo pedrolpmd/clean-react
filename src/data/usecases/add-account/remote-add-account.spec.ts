@@ -8,11 +8,11 @@ import { EmailInUseError, UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteAddAccount
-  httpPostClientSpy: HttpPostClientSpy<AddAccount.Params, RemoteAddAccount.Model>
+  httpPostClientSpy: HttpPostClientSpy<RemoteAddAccount.Model>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy<AddAccount.Params, RemoteAddAccount.Model>()
+  const httpPostClientSpy = new HttpPostClientSpy<RemoteAddAccount.Model>()
   const sut = new RemoteAddAccount(url, httpPostClientSpy)
   return {
     sut,
