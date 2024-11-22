@@ -5,7 +5,7 @@ import { LoadSurveyList } from "@/domain/usecases/load-survey-list";
 export class RemoteLoadSurveyList implements LoadSurveyList {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient
+    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyList.Model[]>
   ){}
 
   async loadAll() : Promise<LoadSurveyList.Model[]> {

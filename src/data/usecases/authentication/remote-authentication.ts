@@ -14,7 +14,6 @@ export class RemoteAuthentication implements Authentication {
       body: params
     })
 
-    console.log(httpResponse)
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.unauthorized: throw new InvalidCredentialsError()

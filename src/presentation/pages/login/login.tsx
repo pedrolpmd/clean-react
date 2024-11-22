@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Styles from './login-styles.scss'
 import { Footer, Input, LoginHeader, FormStatus, SubmitButton } from '@/presentation/components'
-import  { FormContext, ApiContext } from '@/presentation/contexts'
+import { FormContext, ApiContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
 import { Authentication } from '@/domain/usecases'
 import { Link, useHistory } from 'react-router-dom'
@@ -25,7 +25,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   })
 
   useEffect(() => {
-    const { email, password} = state
+    const { email, password } = state
     const formData = {
       email, password
     }
@@ -50,7 +50,8 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         email: state.email,
         password: state.password
       })
-     setCurrentAccount(account)
+
+      setCurrentAccount(account)
       history.replace('/')
     } catch (error) {
       setState({
