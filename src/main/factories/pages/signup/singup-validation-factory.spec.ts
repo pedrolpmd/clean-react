@@ -1,5 +1,4 @@
 import { CompareFieldsValidation, EmailValidation, MinLengthValidation, RequiredFieldValidation, ValidationComposite } from "@/validation/validators"
-import { ValidationBuilder as Builder } from "@/validation/builder/validation-builder"
 import { makeSignupValidation } from "./signup-validation-factory"
 
 describe('SignupValidationFactory', () => {
