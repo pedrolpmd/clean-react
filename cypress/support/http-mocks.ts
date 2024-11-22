@@ -1,5 +1,3 @@
-import faker from 'faker'
-
 const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -12,7 +10,6 @@ export const mockOptionsRequest = (url: string): void => {
     headers
   })
 }
-
 
 export const mockPostRequest = (url: string, statusCode: number, body: any): void => {
   cy.intercept('POST', url, {

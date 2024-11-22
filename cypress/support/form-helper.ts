@@ -31,3 +31,7 @@ export const testLocalStorageItem = (key: string, expectedObj: string): void => 
     }
   })
 }
+
+export const setLocalStorageItem = (key: string, value: object): void => {
+  window.localStorage.setItem(key, JSON.stringify(value))
+}
