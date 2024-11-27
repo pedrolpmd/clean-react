@@ -38,15 +38,15 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
     const passwordError = validation.validate('password', formData)
     const passwordConfirmationError = validation.validate('passwordConfirmation', formData)
 
-    setState({
-      ...state,
+    setState(old => ({
+      ...old,
       isFormInvalid: !!nameError || !!passwordError ||
         !!emailError || !!passwordConfirmationError,
       nameError,
       emailError,
       passwordError,
       passwordConfirmationError
-    })
+    }))
   }, [state.name, state.email, state.password, state.passwordConfirmation])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
