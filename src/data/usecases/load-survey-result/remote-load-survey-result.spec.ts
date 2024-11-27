@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "@/data/protocols/http"
 import { HttpGetClientSpy } from "@/data/test"
 import { RemoteLoadSurveyResult } from "@/data/usecases"
-import { AccessDeniedError } from "@/domain/errors"
+import { AccessDeniedError, UnexpectedError } from "@/domain/errors"
 import faker from 'faker'
 
 type SutTypes = {
@@ -33,5 +33,15 @@ describe('RemoteLoadSurveyList', () => {
 
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new AccessDeniedError())
+  })
+
+  test('Should throw UnexpectedError if HttpGetClient returns 403', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.noContent
+    }
+
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
