@@ -7,11 +7,11 @@ export namespace LoadSurveyResult {
     id: string
     question: string
     date: Date,
-    answears: [{
+    answears: Array<{
       image?: string
       answear: string
       count: number
       percent: number
-    }]
+    }>
   }
 }
