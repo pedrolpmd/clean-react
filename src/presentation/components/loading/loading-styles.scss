@@ -1,8 +1,10 @@
+@import "../../styles/colors.scss";
+
 .loadingWrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb($white, 0.8);
+  background-color: rgba($white, 0.8);
   position: fixed;
   top: 0;
   left: 0;
