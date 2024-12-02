@@ -6,6 +6,7 @@ import Footer from "@/presentation/components/footer/footer"
 import FlipMove from "react-flip-move"
 import { Calendar, Error, Loading } from "@/presentation/components"
 import { LoadSurveyResult } from "@/domain/usecases/load-survey-result"
+import { useErrorHandler } from "@/presentation/hooks"
 
 type Props = {
   loadSurveyResult: LoadSurveyResult
@@ -17,10 +18,14 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult }: Props) => {
     surveyResult: null as LoadSurveyResult.Model
   })
 
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({ ...old, surveyResult: null, error: error.message }))
+  })
+
   useEffect(() => {
     loadSurveyResult.load()
       .then(surveyResult => setState(old => ({ ...old, surveyResult })))
-      .catch()
+      .catch(handleError)
   }, [])
 
   return (
@@ -50,10 +55,11 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult }: Props) => {
 
             </FlipMove>
             <button>Voltar</button>
-            {state.isLoading && <Loading />}
-            {state.error && <Error error={state.error} reload={() => { }} />}
           </>
         }
+        {state.isLoading && <Loading />}
+        {state.error && <Error data-testid='error' error={state.error} reload={() => { }} />}
+
       </div>
       <Footer />
     </div>
