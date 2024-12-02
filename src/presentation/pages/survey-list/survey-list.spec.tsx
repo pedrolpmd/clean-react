@@ -2,7 +2,7 @@ import { AccessDeniedError, UnexpectedError } from "@/domain/errors"
 import { mockAccountModel, mockSurveyListModel } from "@/domain/test"
 import { LoadSurveyList } from "@/domain/usecases"
 import { SurveyList } from '@/presentation/pages'
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom/extend-expect';
 import React from "react"
 import { ApiContext } from "@/presentation/contexts"
@@ -87,5 +87,15 @@ describe('SurveyList Component', () => {
     await waitFor(() => screen.getByRole('heading'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should call LoadSurveyList on reload', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError())
+    makeSut(loadSurveyListSpy)
+    await waitFor(() => screen.getByRole('heading'))
+    fireEvent.click(screen.getByTestId('reload'))
+    expect(loadSurveyListSpy.callsCount).toBe(1)
+    await waitFor(() => screen.getByRole('heading'))
   })
 })

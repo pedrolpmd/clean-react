@@ -28,7 +28,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }) => {
     loadSurveyList.loadAll()
       .then(surveys => setState(old => ({ ...old, surveys })))
       .catch(handleError)
-  }, [])
+  }, [state.reload])
 
   return (
     <div className={Styles.surveyListWrap}>
