@@ -11,7 +11,7 @@ type Props = {
   loadSurveyResult: LoadSurveyResult
 }
 const SurveyList: React.FC<Props> = ({ loadSurveyResult }: Props) => {
-  const [state] = useState({
+  const [state, setState] = useState({
     isLoading: false,
     error: '',
     surveyResult: null as LoadSurveyResult.Model
@@ -19,9 +19,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult }: Props) => {
 
   useEffect(() => {
     loadSurveyResult.load()
-      .then()
+      .then(surveyResult => setState(old => ({ ...old, surveyResult })))
       .catch()
-  },[])
+  }, [])
 
   return (
     <div className={Styles.surveyResultWrap}>
@@ -30,19 +30,28 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult }: Props) => {
         {state.surveyResult &&
           <>
             <hgroup>
-              <Calendar date={new Date()} className={Styles.calendarWrap} />
-              <h2>Qual é seu framework favorito?</h2>
+              <Calendar date={state.surveyResult.date} className={Styles.calendarWrap} />
+              <h2 data-testid={'question'}>{state.surveyResult.question}</h2>
             </hgroup>
-            <FlipMove className={Styles.answearList}>
-              <li>
-                <img src='https://delta-dev-software.fr/wp-content/uploads/2024/02/react-logo-freelogovectors.net_.png' />
-                <span className={Styles.answear}>ReactJS</span>
-                <span className={Styles.percent}>50%</span>
-              </li>
+            <FlipMove data-testid='answers' className={Styles.answerList}>
+              {
+                state.surveyResult.answers.map(answer =>
+                  <li
+                    data-testid='answer-wrap'
+                    key={answer.answer}
+                    className={answer.isCurrentAccountAnswer ? Styles.active : ''}
+                  >
+                    {answer.image && <img data-testid='image' src={answer.image} />}
+                    <span data-testid='answer' className={Styles.answer}>{answer.answer}</span>
+                    <span data-testid='percent' className={Styles.percent}>{answer.percent}%</span>
+                  </li>
+                )
+              }
+
             </FlipMove>
             <button>Voltar</button>
-            { state.isLoading && <Loading /> }
-            { state.error && <Error error={state.error} reload={() => {}} /> }
+            {state.isLoading && <Loading />}
+            {state.error && <Error error={state.error} reload={() => { }} />}
           </>
         }
       </div>

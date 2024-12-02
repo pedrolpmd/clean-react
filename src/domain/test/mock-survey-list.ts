@@ -7,7 +7,7 @@ export const mockSurveyModel = (): LoadSurveyList.Model => (
     id: faker.random.uuid(),
     question: faker.random.words(10),
     date: new Date(),
-    didAnswear: true
+    didanswer: true
   }
 )
 

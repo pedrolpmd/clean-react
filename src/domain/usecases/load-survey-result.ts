@@ -7,9 +7,9 @@ export namespace LoadSurveyResult {
     id: string
     question: string
     date: Date,
-    answears: Array<{
+    answers: Array<{
       image?: string
-      answear: string
+      answer: string
       count: number
       percent: number
       isCurrentAccountAnswer: boolean

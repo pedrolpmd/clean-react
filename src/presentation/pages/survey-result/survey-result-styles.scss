@@ -77,7 +77,7 @@
     }
 
 
-    .answearList {
+    .answerList {
       list-style: none;
       display: flex;
       flex-direction: column;
@@ -103,7 +103,7 @@
           margin-right: 16px;
         }
 
-        .answear {
+        .answer {
           flex-grow: 1;
           margin-right: 16px;
           font-size: 20;
@@ -165,14 +165,14 @@
       }
   
   
-      .answearList {
+      .answerList {
         li {
           img {
             width: 40px;
             height: 40px;
           }
   
-          .answear {
+          .answer {
             font-size: 16px;
           }
   

@@ -13,7 +13,7 @@ describe('SurveyItem', () => {
 
   test('Should render with correct values', () => {
     const survey = Object.assign(mockSurveyModel(), {
-      didAnswear: true,
+      didanswer: true,
       date: new Date('2024-01-10T00:00:00')
     })
    
@@ -27,7 +27,7 @@ describe('SurveyItem', () => {
 
   test('Should render with correct values', () => {
     const survey = Object.assign(mockSurveyModel(), {
-      didAnswear: true,
+      didanswer: true,
       date: new Date('2024-05-03T00:00:00')
     })
    

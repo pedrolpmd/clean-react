@@ -70,7 +70,7 @@ describe('RemoteLoadSurveyList', () => {
     const httpReponse = await sut.load()
     expect(httpReponse).toEqual({
       question: httpResult.question,
-      answears: httpResult.answears,
+      answers: httpResult.answers,
       id: httpResult.id,
       date: new Date(httpResult.date)
     })

@@ -59,19 +59,19 @@ describe('LoadSurveyList', () => {
     expect(surveyList).toEqual([{
       id: httpResult[0].id,
       question: httpResult[0].question,
-      didAnswear: httpResult[0].didAnswear,
+      didanswer: httpResult[0].didanswer,
       date: new Date(httpResult[0].date)
     },
     {
       id: httpResult[1].id,
       question: httpResult[1].question,
-      didAnswear: httpResult[1].didAnswear,
+      didanswer: httpResult[1].didanswer,
       date: new Date(httpResult[1].date)
     },
     {
       id: httpResult[2].id,
       question: httpResult[2].question,
-      didAnswear: httpResult[2].didAnswear,
+      didanswer: httpResult[2].didanswer,
       date: new Date(httpResult[2].date)
     }])
   })

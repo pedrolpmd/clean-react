@@ -6,19 +6,19 @@ export const mockSurveyResultModel = (): LoadSurveyResult.Model => (
     id: faker.random.uuid(),
     question: faker.random.words(10),
     date: faker.date.recent(),
-    answears: [
+    answers: [
       {
         image: faker.internet.url(),
-        answear: faker.random.word(),
+        answer: faker.random.word(),
         count: faker.random.number(),
         percent: faker.random.number(100),
-        isCurrentAccountAnswer: faker.random.boolean()
+        isCurrentAccountAnswer: true
       },
       {
-        answear: faker.random.word(),
+        answer: faker.random.word(),
         count: faker.random.number(),
         percent: faker.random.number(100),
-        isCurrentAccountAnswer: faker.random.boolean()
+        isCurrentAccountAnswer: false
       }
     ]
   }
