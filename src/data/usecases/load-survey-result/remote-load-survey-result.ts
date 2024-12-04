@@ -11,9 +11,9 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
 
   }
   async load(): Promise<LoadSurveyResult.Model> {
-    const httpReponse = await this.httpGetClient.request({ url: this.url, method: 'get' })
-    const remoteSurveyResult = httpReponse.body
-    switch (httpReponse.statusCode) {
+    const httpResponse = await this.httpGetClient.request({ url: this.url, method: 'get' })
+    const remoteSurveyResult = httpResponse.body
+    switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         return Object.assign({}, remoteSurveyResult, { date: new Date(remoteSurveyResult.date )});
       case HttpStatusCode.forbidden:
