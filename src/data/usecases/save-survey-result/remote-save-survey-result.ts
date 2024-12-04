@@ -11,7 +11,7 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
 
   }
   async save(params: SaveSurveyResult.Params): Promise<LoadSurveyResult.Model> {
-    await this.httpGetClient.request({ url: this.url, method: 'put' })
+    await this.httpGetClient.request({ url: this.url, method: 'put', body: params })
     
     return null
 
