@@ -40,10 +40,10 @@ describe('RemoteLoadSurveyList', () => {
     await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
-  test('Should throw UnexpectedError if HttpClient returns 403', async () => {
+  test('Should throw UnexpectedError if HttpClient returns 404', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response = {
-      statusCode: HttpStatusCode.noContent
+      statusCode: HttpStatusCode.notFound
     }
 
     const promise = sut.load()
