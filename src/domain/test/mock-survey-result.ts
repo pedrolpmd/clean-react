@@ -1,5 +1,6 @@
-import faker from 'faker'
-import { LoadSurveyResult, SaveSurveyResult } from '@/domain/usecases'
+import { LoadSurveyResult } from '@/domain/usecases';
+import faker from 'faker';
+import { SaveSurveyResult } from './../usecases/save-survey-result';
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResult.Params => ({
   answer: faker.random.words(10)
@@ -37,4 +38,14 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
     return this.surveyResult
   }
 
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  params: SaveSurveyResult.Params
+  surveyResult = mockSurveyResultModel()
+
+  async save(params: SaveSurveyResult.Params): Promise<LoadSurveyResult.Model> {
+    this.params = params
+    return this.surveyResult
+  }
 }
