@@ -22,7 +22,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult, saveSurveyResult }: Pro
   })
 
   const handleError = useErrorHandler((error: Error) => {
-    setState(old => ({ ...old, surveyResult: null, error: error.message }))
+    setState(old => ({ ...old, surveyResult: null, isLoading: false, error: error.message }))
   })
 
   const reload = (): void => setState(old => ({
@@ -41,7 +41,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyResult, saveSurveyResult }: Pro
 
     saveSurveyResult.save({ answer })
       .then()
-      .catch()
+      .catch(handleError)
   }
 
   useEffect(() => {
