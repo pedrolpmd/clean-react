@@ -7,23 +7,26 @@ import { getCurrentAccounAdapter, setCurrentAccounAdapter } from '../adapters/cu
 import { PrivateRoute } from '@/presentation/components'
 import { makeSurveyList } from '../factories/pages/surveyList/survey-list-factory'
 import { makeSurveyResult } from '../factories/pages/survey-result/survey-result-factory'
-
+import { RecoilRoot } from 'recoil'
 const Router: React.FC = () => {
   return (
-    <ApiContext.Provider value={{
+    <RecoilRoot>
+      <ApiContext.Provider value={{
         setCurrentAccount: setCurrentAccounAdapter,
         getCurrentAccount: getCurrentAccounAdapter
       }}
-    >
-      <BrowserRouter>
-        <Switch>
-          <Route path="/login" component={makeLogin} />
-          <Route path="/signup" component={makeSignup} />
-          <PrivateRoute path="/" exact component={makeSurveyList} />
-          <PrivateRoute path="/surveys/:id" component={makeSurveyResult} />
-        </Switch>
-      </BrowserRouter>
-    </ApiContext.Provider>
+      >
+        <BrowserRouter>
+          <Switch>
+            <Route path="/login" component={makeLogin} />
+            <Route path="/signup" component={makeSignup} />
+            <PrivateRoute path="/" exact component={makeSurveyList} />
+            <PrivateRoute path="/surveys/:id" component={makeSurveyResult} />
+          </Switch>
+        </BrowserRouter>
+      </ApiContext.Provider>
+    </RecoilRoot>
+
   )
 }
 

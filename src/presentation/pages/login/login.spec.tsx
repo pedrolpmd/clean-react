@@ -7,6 +7,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import faker from 'faker'
 import { createMemoryHistory } from 'history'
 import React from 'react'
+import { RecoilRoot } from 'recoil'
 import { Router } from 'react-router-dom'
 
 type SutTypes = {
@@ -27,16 +28,19 @@ const makeSut = (params?: SutParams): SutTypes => {
 
   validationStub.errorMessage = params?.validationError
   render(
-    <ApiContext.Provider
-      value={{ setCurrentAccount: setCurrentAccountMock}}
-    >
-      <Router history={history}>
-        <Login
-          validation={validationStub}
-          authentication={authenticationSpy}
-        />
-      </Router>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{ setCurrentAccount: setCurrentAccountMock }}
+      >
+        <Router history={history}>
+          <Login
+            validation={validationStub}
+            authentication={authenticationSpy}
+          />
+        </Router>
+      </ApiContext.Provider>
+    </RecoilRoot>
+
   )
   return {
     authenticationSpy,

@@ -9,6 +9,7 @@ import { Router } from 'react-router-dom'
 import { ApiContext } from '@/presentation/contexts'
 import { AccountModel } from '@/domain/models'
 import { AddAccountSpy } from '@/domain/test'
+import { RecoilRoot } from 'recoil'
 
 type SutParams = {
   validationError: string,
@@ -27,16 +28,18 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.validationError
 
   render(
-    <ApiContext.Provider 
-      value={{ setCurrentAccount: setCurrentAccountMock }}
-    >
-      <Router history={history}>
-        <Signup
-          validation={validationStub}
-          addAccount={addAccountSpy}
-        />
-      </Router>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{ setCurrentAccount: setCurrentAccountMock }}
+      >
+        <Router history={history}>
+          <Signup
+            validation={validationStub}
+            addAccount={addAccountSpy}
+          />
+        </Router>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
 
   return {
