@@ -8,6 +8,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { createMemoryHistory, MemoryHistory } from "history"
 import React from "react"
 import { Router } from "react-router-dom"
+import { RecoilRoot } from "recoil"
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
@@ -33,9 +34,11 @@ const makeSut = ({
       setCurrentAccount: setCurrentAccountMock,
       getCurrentAccount: () => mockAccountModel()
     }}>
-      <Router history={history}>
-        <SurveyResult loadSurveyResult={loadSurveyResultSpy} saveSurveyResult={saveSurveyResultSpy} />
-      </Router>
+      <RecoilRoot>
+        <Router history={history}>
+          <SurveyResult loadSurveyResult={loadSurveyResultSpy} saveSurveyResult={saveSurveyResultSpy} />
+        </Router>
+      </RecoilRoot>
     </ApiContext.Provider>
   )
 
@@ -161,7 +164,7 @@ describe('SurveyResult component', () => {
     const error = new UnexpectedError()
     jest.spyOn(saveSurveyResultSpy, 'save').mockRejectedValueOnce(error)
     makeSut({ saveSurveyResultSpy })
- 
+
     await waitFor(() => screen.getByTestId('survey-result'))
     const answerWrap = screen.queryAllByTestId('answer-wrap')
     fireEvent.click(answerWrap[1])
