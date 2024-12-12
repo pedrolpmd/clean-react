@@ -2,13 +2,14 @@ import { AccessDeniedError, UnexpectedError } from "@/domain/errors"
 import { mockAccountModel, mockSurveyListModel } from "@/domain/test"
 import { LoadSurveyList } from "@/domain/usecases"
 import { SurveyList } from '@/presentation/pages'
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import '@testing-library/jest-dom/extend-expect';
 import React from "react"
-import { ApiContext } from "@/presentation/contexts"
 import { Router } from "react-router-dom"
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { AccountModel } from "@/domain/models"
+import { RecoilRoot } from "recoil"
+import { currentAccountState } from "@/presentation/components"
 
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0
@@ -26,17 +27,21 @@ type SutTypes = {
 }
 
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
-  const history = createMemoryHistory({ initialEntries: ['/']})
-  const setCurrentAccountMock =  jest.fn()
+  const history = createMemoryHistory({ initialEntries: ['/'] })
+  const setCurrentAccountMock = jest.fn()
+
+  const mockedState = {
+    setCurrentAccount: setCurrentAccountMock,
+    getCurrentAccount: () => mockAccountModel()
+  }
+
   render(
-    <ApiContext.Provider value={{
-      setCurrentAccount: setCurrentAccountMock, 
-      getCurrentAccount: () => mockAccountModel()
-    }}>
+    <RecoilRoot initializeState={({ set }) => set(currentAccountState, mockedState)}>
       <Router history={history}>
         <SurveyList loadSurveyList={loadSurveyListSpy} />
       </Router>
-    </ApiContext.Provider>)
+    </RecoilRoot>
+  )
 
   return {
     loadSurveyListSpy,
@@ -87,5 +92,15 @@ describe('SurveyList Component', () => {
     await waitFor(() => screen.getByRole('heading'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should call LoadSurveyList on reload', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError())
+    makeSut(loadSurveyListSpy)
+    await waitFor(() => screen.getByRole('heading'))
+    fireEvent.click(screen.getByTestId('reload'))
+    expect(loadSurveyListSpy.callsCount).toBe(1)
+    await waitFor(() => screen.getByRole('heading'))
   })
 })

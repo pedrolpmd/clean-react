@@ -1,13 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen } from '@testing-library/react'
-import Input from './input'
-import { FormContext } from "@/presentation/contexts";
+import { Input } from '@/presentation/components'
 
 const makeSut = (): void => {
   render(
-    <FormContext.Provider value={{ state: {} }}>
-      <Input name="test-input" />
-    </FormContext.Provider >
+    <Input name="test-input" state={{}} setState={null} />
   )
 }
 
@@ -30,7 +27,7 @@ describe('Input component', () => {
     const input = screen.getByTestId('test-input') as HTMLInputElement
     const label = screen.getByTestId('test-input-label')
     fireEvent.click(label)
-    
+
     expect(document.activeElement).toBe(input)
   })
 })

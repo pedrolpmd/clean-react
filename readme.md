@@ -60,6 +60,7 @@
 * Husky
 * Lint Staged
 * Standard Javascript Style
+* Recoil
 
 > ## Features do React
 
